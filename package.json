@@ -2,7 +2,11 @@
   "name": "SocialMedia-Api",
   "version": "1.0.0",
   "main": "index.js",
-  "author": {"name": "Sheheryaar Ansar", "email": "Sheryaarlong@gmail.com", "url": "https://www.github.com/Sheryaar-Ansar"},
+  "author": {
+    "name": "Sheheryaar Ansar",
+    "email": "Sheryaarlong@gmail.com",
+    "url": "https://www.github.com/Sheryaar-Ansar"
+  },
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js"
@@ -13,5 +17,8 @@
     "express": "^5.1.0",
     "joi": "^18.0.1",
     "mongoose": "^8.18.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
 }

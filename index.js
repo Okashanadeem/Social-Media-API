@@ -4,6 +4,9 @@ const app = express()
 
 const postRoute = require('./routes/postRoute')
 const feedRoute = require('./routes/feedRoute')
+const db = require('./config/db')
+
+db()
 
 app.use(express.json())
 
