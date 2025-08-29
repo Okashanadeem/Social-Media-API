@@ -16,7 +16,7 @@ app.get("/", (req, res) => {
   res.send("Auth Backend is running");
 });
 
-// Swagger configuration
+
 const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
@@ -31,7 +31,7 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: ["./src/routes/*.js"], // Path to your route files
+  apis: ["./src/routes/*.js"], 
 };
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);

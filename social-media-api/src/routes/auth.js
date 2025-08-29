@@ -64,7 +64,6 @@ function signToken(user) {
  *         description: Invalid credentials
  */
 
-// POST /api/auth/register
 router.post("/register", async (req, res) => {
   const { username, email, password } = req.body;
   try {
@@ -77,7 +76,7 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// POST /api/auth/login
+
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -96,7 +95,6 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// GET /api/auth/me (protected)
 router.get("/me", auth, async (req, res) => {
   const user = await User.findById(req.user.id).select("-password");
   res.json(user);
