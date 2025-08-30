@@ -246,6 +246,7 @@ All API responses follow a consistent format:
 
 ## Project Structure
 
+```
 Social-Media-API/
 │   ├── controllers/
 │   │   ├── auth.controller.js
