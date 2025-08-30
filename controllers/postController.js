@@ -15,17 +15,78 @@ exports.createPost = async (req, res) => {
         })
         res.status(201).json(newPost)
     } catch (error) {
-        res.status(500).json({error: error.message})
+        res.status(500).json({ error: error.message })
     }
 }
 
-exports.getPostById = async (req,res) => {
+exports.getPostById = async (req, res) => {
     const postById = await Post.findById(req.params.id)
-    if(!postById) return res.status(404).json({error: "The post you are searching for is no longer available"})
+    if (!postById) return res.status(404).json({ error: "The post you are searching for is no longer available" })
     res.json({
         ...postById,
         likesCount: postById.likes.length,
         commentsCount: postById.comments.length,
-        userLike: postById.likes.some(id=>id.toString() === req.user.id)
+        userLike: postById.likes.some(id => id.toString() === req.user.id)
     })
+}
+
+exports.updatePostById = async (req, res) => {
+    try {
+        const existingPost = await Post.findById(req.params.id)
+        if (!existingPost) return res.status(404).json({ error: "The post you are searching for is no longer available" })
+        if (existingPost.authorName !== req.user.id) return res.status(403).json({ error: "You're not authorized to perform this action" })
+
+        const updatedData = {}
+        if (req.body.text) updatedData.text = req.body.text
+        if (req.file) updatedData.image = `/uploads/${req.file.filename}`
+
+        const post = await Post.findByIdAndUpdate(
+            req.params.id,
+            { $set: updatedData },
+            { new: true, runValidators: true }
+        )
+        res.json(post)
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+}
+
+exports.deletePostById = async (req, res) => {
+    try {
+        const existingPost = await Post.findById(req.params.id)
+        if (!existingPost) return res.status(404).json({ error: "The post you are searching is no longer available" })
+        if (existingPost.authorName !== req.user.id && req.user.role !== 'admin') return res.status(403).json({ error: "You're not authorized to perform this action" })
+        await Post.findByIdAndDelete(req.params.id)
+        res.json({message: "Post deleted successfully"})
+        
+    } catch (error) {
+        res.status(500).json({error: error.message})
+    }
+}
+
+exports.toggleLike = async (req,res) => {
+    try {
+        const postId = req.params.id
+        const userId = req.user.id
+
+        const existingPost = await Post.findById(postId).select('likes')
+        if(!existingPost) return res.status(404).json({error: "The post you are searching is no longer available"})
+        
+        const alreadyLiked = existingPost.likes.includes(userId)
+
+        const updated = alreadyLiked ? {$pull: {likes: userId}} : {$addToSet: {likes: userId}}
+
+        const updatedPost = await Post.findByIdAndUpdate(
+            postId,
+            updated,
+            {new:true, runValidators: true}
+        ).select("likes")
+
+        res.json({
+            likes: !alreadyLiked,
+            likesCount: updatedPost.likes.length
+        })
+    } catch (error) {
+        res.status(500).json({error: error.message})
+    }
 }
