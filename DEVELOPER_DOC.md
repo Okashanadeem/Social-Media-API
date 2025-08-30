@@ -17,17 +17,17 @@ A secure, production-ready Node.js + Express REST API backend for a social media
 - **Search Functionality**: Full-text search across users and posts
 - **Rate Limiting**: API protection against abuse and spam
 
-## 📋 Table of Contents | Quick Access
+## Table of Contents | Quick Access
 
 - [Installation](#installation)  
 - [API Documentation](#api-documentation)  
 - [Database Schema](#database-schema)  
 - [Modules & Development Order](#modules--development-order)  
+- [Team module assignments](#team-module-assignments)  
 - [Project Structure](#project-structure)  
-- [Development](#development)  
 
 
-## 🛠 Installation
+## Installation
 
 ### Prerequisites
 
@@ -56,7 +56,7 @@ A secure, production-ready Node.js + Express REST API backend for a social media
    ```
 
 
-## 📖 API Documentation
+## API Documentation
 
 ### Base URL
 ```
@@ -244,11 +244,9 @@ All API responses follow a consistent format:
 }
 ```
 
-## 📁 Project Structure
+## Project Structure
 
-```
-social-media-api/
-├── src/
+Social-Media-API/
 │   ├── controllers/
 │   │   ├── auth.controller.js
 │   │   ├── users.controller.js
@@ -264,9 +262,7 @@ social-media-api/
 │   ├── models/
 │   │   ├── user.model.js
 │   │   ├── post.model.js
-│   │   ├── comment.model.js
-│   │   ├── follow.model.js
-│   │   └── like.model.js
+│   │   └── comment.model.js
 │   ├── routes/
 │   │   ├── auth.routes.js
 │   │   ├── users.routes.js
@@ -276,6 +272,7 @@ social-media-api/
 │   ├── middlewares/
 │   │   ├── auth.middleware.js
 │   │   ├── role.middleware.js
+│   │   ├── multer.middleware.js
 │   │   └── error.middleware.js
 │   ├── uploads/
 │   │   └── multer.js             # File upload config
@@ -420,5 +417,111 @@ To ensure smooth progress, we divide the project into **independent modules**. E
 * View system-wide analytics.
 
 👉 Only required if time permits, but makes the project **look professional**.
+
+---
+
+# Team module assignments
+
+Below is a clear, final module division for the three team members. Branch names, PR titles, exact tasks, files to change, and acceptance criteria are included — ready to paste.
+
+---
+
+## **Okasha Nadeem**
+
+**Branch:** `feature/core-upload`
+**PR title:** `feat(core+upload): scaffolding, uploads, admin basics`
+
+**Main tasks**
+
+* Project scaffolding & config
+
+  * `app.js`, `server.js`, `config/db.js`, `.env.example`, `package.json` scripts
+* Global middleware
+
+  * `middlewares/error.middleware.js`, `middlewares/response.middleware.js`
+* User endpoints (read/update)
+
+  * `controllers/users.controller.js`, `routes/users.routes.js`, `validators/user.validator.js` → `GET /api/users/me`, `PUT /api/users/me`
+* File upload (avatars)
+
+  * `uploads/multer.js`, `middlewares/multer.middleware.js`
+* Admin skeleton (role-guarded)
+
+  * `controllers/admin.controller.js`, `routes/admin.routes.js`, `middlewares/role.middleware.js`
+
+**Acceptance**
+
+* `npm run dev` boots and connects to DB.
+* Protected routes enforce JWT.
+* Avatar upload writes `avatarUrl`.
+* Admin endpoints return expected format and require admin role.
+
+**Module link:**
+
+* [Module 1 — Core Setup & Config](#1-core-setup--config-module-1)
+* [Module 7 — Admin Panel & Moderation](#7-admin-panel--moderation-module-7) (skeleton only)
+
+---
+
+## **Sheryaar Ansar**
+
+**Branch:** `Post-Feed-Comments-module`
+**PR title:** `feat(posts+interactions): posts CRUD, feed, likes & comments`
+
+**Main tasks**
+
+* Posts CRUD & images
+
+  * `controllers/posts.controller.js`, `routes/posts.routes.js`, `models/post.model.js`, `validators/post.validator.js`
+* Likes & comments
+
+  * `models/like.model.js`, `models/comment.model.js`, controllers for toggle-like and comments
+* Feed & follow
+
+  * `controllers/feed.controller.js`, `routes/feed.routes.js`, `models/follow.model.js`, `users.controller.js` updates
+* Edge cases & permissions
+
+  * double-like, soft-delete comments, author/admin permission checks
+
+**Acceptance**
+
+* Posts CRUD works with uploads.
+* Counts (`likesCount`, `commentsCount`) remain consistent.
+* Feed returns followed-users’ posts with pagination and `likedByUser`.
+* Like/comment edge cases handled.
+
+**Module link:**
+
+* [Module 3 — Posts & Content System](#3-posts--content-system-module-3)
+* [Module 4 — Social Interactions (Likes & Comments)](#4-social-interactions-likes--comments-module-4)
+* [Module 5 — Feed & Follows](#5-feed--follows-module-5)
+
+---
+
+## **Umair**
+
+**Branch:** `feature/auth-support-umair`
+**PR title:** `feat(auth): register, login, jwt, auth-middleware`
+
+**Main tasks**
+
+* Authentication & user core (owner)
+
+  * `controllers/auth.controller.js`, `routes/auth.routes.js`, `models/user.model.js`, `middlewares/auth.middleware.js`, `validators/auth.validator.js`
+  * Implement `POST /api/auth/register`, `POST /api/auth/login`, JWT creation/verification, password hashing, `POST /api/auth/logout`.
+* Light support scripts & validators
+
+  * `scripts/seed.js` (basic seed), `scripts/reset-db.js` (safe reset), `validators/*.js` (auth & basic input)
+
+**Acceptance**
+
+* Register/login endpoints issue valid JWTs and protected routes validate tokens.
+* `npm run seed` creates sample users/posts (basic); `npm run reset-db` clears collections.
+* Validators reject invalid auth inputs with consistent error format.
+* README contains quick usage examples; smoke-test runs main flow.
+
+**Module link:**
+
+* [Module 2 — Authentication & User Management](#2-authentication--user-management-module-2)
 
 ---
