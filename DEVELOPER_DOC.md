@@ -88,306 +88,93 @@ All API responses follow a consistent format:
 }
 ```
 
-### Authentication
+## 1. **Auth APIs**
 
-#### Register User
-```http
-POST /api/auth/register
-Content-Type: application/json
+| Method | Endpoint             | Description                             | Request Body                          | Response                                   |
+| ------ | -------------------- | --------------------------------------- | ------------------------------------- | ------------------------------------------ |
+| `POST` | `/api/auth/register` | Register a new user                     | `{ name, username, email, password }` | `{ message, user: {id, username, email} }` |
+| `POST` | `/api/auth/login`    | Login with credentials                  | `{ email, password }`                 | `{ token, user: {id, username, email} }`   |
+| `POST` | `/api/auth/logout`   | Logout user (client just deletes token) | -                                     | `{ message: "Logged out" }`                |
 
-{
-  "name": "John Doe",
-  "username": "johndoe",
-  "email": "john@example.com",
-  "password": "securepassword"
-}
-```
+---
 
-**Response:**
-```json
-{
-  "success": true,
-  "data": {
-    "user": {
-      "id": "507f1f77bcf86cd799439011",
-      "name": "John Doe",
-      "username": "johndoe",
-      "avatarUrl": null
-    }
-  }
-}
-```
+## 2. **User APIs**
 
-#### Login
-```http
-POST /api/auth/login
-Content-Type: application/json
+| Method | Endpoint                        | Description                     | Request Body                               | Response                                                                   |
+| ------ | ------------------------------- | ------------------------------- | ------------------------------------------ | -------------------------------------------------------------------------- |
+| `GET`  | `/api/users/me`                 | Get own profile (auth required) | -                                          | `{ id, username, bio, followersCount, followingCount, avatarUrl }`         |
+| `PUT`  | `/api/users/me`                 | Update profile                  | `{ username?, bio?, avatar? } (multipart)` | `{ message, updatedUser }`                                                 |
+| `GET`  | `/api/users/:username`          | View public profile             | -                                          | `{ username, bio, followersCount, followingCount, avatarUrl, postsCount }` |
+| `POST` | `/api/users/:username/follow`   | Follow a user                   | -                                          | `{ message, followersCount, followingCount }`                              |
+| `POST` | `/api/users/:username/unfollow` | Unfollow a user                 | -                                          | `{ message, followersCount, followingCount }`                              |
 
-{
-  "usernameOrEmail": "johndoe",
-  "password": "securepassword"
-}
-```
+---
 
-**Response:**
-```json
-{
-  "success": true,
-  "data": {
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-    "user": {
-      "id": "507f1f77bcf86cd799439011",
-      "username": "johndoe",
-      "name": "John Doe"
-    }
-  }
-}
-```
+## 3. **Post APIs**
 
-### User Management
+| Method   | Endpoint                    | Description           | Request Body                   | Response                                                       |
+| -------- | --------------------------- | --------------------- | ------------------------------ | -------------------------------------------------------------- |
+| `POST`   | `/api/posts`                | Create a new post     | `{ text, image? } (multipart)` | `{ id, text, imageUrl, createdAt }`                            |
+| `GET`    | `/api/posts/:id`            | Get a single post     | -                              | `{ id, text, imageUrl, likesCount, commentsCount, createdBy }` |
+| `PUT`    | `/api/posts/:id`            | Update own post       | `{ text?, image? }`            | `{ message, updatedPost }`                                     |
+| `DELETE` | `/api/posts/:id`            | Delete own post       | -                              | `{ message: "Post deleted" }`                                  |
+| `GET`    | `/api/posts/user/:username` | Get all posts by user | -                              | `[ { post1 }, { post2 } ... ]`                                 |
 
-#### Get User Profile
-```http
-GET /api/users/:username
-```
+---
 
-**Response:**
-```json
-{
-  "success": true,
-  "data": {
-    "user": {
-      "id": "507f1f77bcf86cd799439011",
-      "name": "John Doe",
-      "username": "johndoe",
-      "bio": "Software Developer",
-      "avatarUrl": "/uploads/avatars/avatar.jpg",
-      "followersCount": 150,
-      "followingCount": 75
-    }
-  }
-}
-```
+## 4. **Feed APIs**
 
-#### Update Profile
-```http
-PUT /api/users/me
-Authorization: Bearer {token}
-Content-Type: application/json
+| Method | Endpoint    | Description                | Query Params          | Response                                   |
+| ------ | ----------- | -------------------------- | --------------------- | ------------------------------------------ |
+| `GET`  | `/api/feed` | Get feed of followed users | `?page=&limit=&sort=` | `[ { post, likedByUser, commentsCount } ]` |
 
-{
-  "name": "John Smith",
-  "bio": "Full Stack Developer"
-}
-```
+---
 
-#### Upload Avatar
-```http
-PUT /api/users/me/avatar
-Authorization: Bearer {token}
-Content-Type: multipart/form-data
+## 5. **Like APIs**
 
-avatar: [file]
-```
+| Method | Endpoint              | Description                    | Request Body | Response                  |
+| ------ | --------------------- | ------------------------------ | ------------ | ------------------------- |
+| `POST` | `/api/posts/:id/like` | Like or unlike a post (toggle) | -            | `{ message, likesCount }` |
 
-### Social Features
+---
 
-#### Follow User
-```http
-POST /api/users/:username/follow
-Authorization: Bearer {token}
-```
+## 6. **Comment APIs**
 
-**Response:**
-```json
-{
-  "success": true,
-  "data": {
-    "following": true,
-    "followersCount": 151,
-    "followingCount": 76
-  }
-}
-```
+| Method | Endpoint                  | Description             | Request Body    | Response                             |
+| ------ | ------------------------- | ----------------------- | --------------- | ------------------------------------ |
+| `POST` | `/api/posts/:id/comments` | Add a comment           | `{ text }`      | `{ id, text, createdBy, createdAt }` |
+| `GET`  | `/api/posts/:id/comments` | Get comments for a post | `?page=&limit=` | `[ { comment1 }, { comment2 } ... ]` |
 
-#### Unfollow User
-```http
-POST /api/users/:username/unfollow
-Authorization: Bearer {token}
-```
+---
 
-### Posts
+## 7. **Admin APIs**
 
-#### Create Post
-```http
-POST /api/posts
-Authorization: Bearer {token}
-Content-Type: multipart/form-data
+| Method   | Endpoint               | Description   | Response                                |
+| -------- | ---------------------- | ------------- | --------------------------------------- |
+| `GET`    | `/api/admin/users`     | Get all users | `[ { user1 }, { user2 } ... ]`          |
+| `DELETE` | `/api/admin/users/:id` | Delete a user | `{ message }`                           |
+| `DELETE` | `/api/admin/posts/:id` | Delete a post | `{ message }`                           |
+| `GET`    | `/api/admin/stats`     | Get analytics | `{ totalUsers, activeUsers, topPosts }` |
 
-text: "Hello World!"
-image: [file] (optional)
-```
+---
 
-**Response:**
-```json
-{
-  "success": true,
-  "data": {
-    "id": "507f1f77bcf86cd799439012",
-    "text": "Hello World!",
-    "imageUrl": "/uploads/posts/image.jpg",
-    "likesCount": 0,
-    "commentsCount": 0,
-    "createdAt": "2024-01-15T10:30:00Z"
-  }
-}
-```
+## 8. **Analytics APIs**
 
-#### Get Post
-```http
-GET /api/posts/:id
-```
+| Method | Endpoint                  | Description                     | Query Params      | Response                                          |
+| ------ | ------------------------- | ------------------------------- | ----------------- | ------------------------------------------------- |
+| `GET`  | `/api/stats/top-posts`    | Get top posts by likes/comments | `?days=7&limit=5` | `[ { postId, text, likesCount, commentsCount } ]` |
+| `GET`  | `/api/stats/active-users` | Get active users by posts count | `?days=7&limit=5` | `[ { userId, username, postCount } ]`             |
 
-#### Update Post
-```http
-PUT /api/posts/:id
-Authorization: Bearer {token}
-Content-Type: application/json
+---
 
-{
-  "text": "Updated post content"
-}
-```
+## 9. **Optional APIs (If Time Allows)**
 
-#### Delete Post
-```http
-DELETE /api/posts/:id
-Authorization: Bearer {token}
-```
+| Method | Endpoint             | Description                       |
+| ------ | -------------------- | --------------------------------- |
+| `GET`  | `/api/search?query=` | Full-text search in users & posts |
+| `GET`  | `/api/notifications` | Pull notifications for user       |
 
-### Interactions
-
-#### Like/Unlike Post
-```http
-POST /api/posts/:id/like
-Authorization: Bearer {token}
-```
-
-**Response:**
-```json
-{
-  "success": true,
-  "data": {
-    "liked": true,
-    "likesCount": 12
-  }
-}
-```
-
-#### Add Comment
-```http
-POST /api/posts/:id/comments
-Authorization: Bearer {token}
-Content-Type: application/json
-
-{
-  "text": "Great post!"
-}
-```
-
-#### Get Comments
-```http
-GET /api/posts/:id/comments?page=1&limit=20
-```
-
-### Feed
-
-#### Get Personalized Feed
-```http
-GET /api/feed?page=1&limit=20&sort=recent
-Authorization: Bearer {token}
-```
-
-**Response:**
-```json
-{
-  "success": true,
-  "data": {
-    "posts": [
-      {
-        "id": "507f1f77bcf86cd799439012",
-        "text": "Hello World!",
-        "imageUrl": "/uploads/posts/image.jpg",
-        "likesCount": 5,
-        "commentsCount": 2,
-        "likedByUser": true,
-        "createdAt": "2024-01-15T10:30:00Z",
-        "author": {
-          "id": "507f1f77bcf86cd799439011",
-          "username": "johndoe",
-          "name": "John Doe",
-          "avatarUrl": "/uploads/avatars/avatar.jpg"
-        }
-      }
-    ],
-    "pagination": {
-      "page": 1,
-      "limit": 20,
-      "total": 45,
-      "pages": 3
-    }
-  }
-}
-```
-
-### Analytics
-
-#### Get Top Posts
-```http
-GET /api/stats/top-posts?days=7&limit=5
-Authorization: Bearer {token}
-```
-
-**Response:**
-```json
-{
-  "success": true,
-  "data": {
-    "posts": [
-      {
-        "id": "507f1f77bcf86cd799439012",
-        "text": "Popular post content",
-        "likesCount": 150,
-        "commentsCount": 45,
-        "author": {
-          "username": "johndoe",
-          "name": "John Doe"
-        }
-      }
-    ]
-  }
-}
-```
-
-### Admin
-
-#### Get All Users (Admin)
-```http
-GET /api/admin/users
-Authorization: Bearer {admin-token}
-```
-
-#### Delete User (Admin)
-```http
-DELETE /api/admin/users/:id
-Authorization: Bearer {admin-token}
-```
-
-#### Get System Statistics (Admin)
-```http
-GET /api/admin/stats
-Authorization: Bearer {admin-token}
-```
+---
 
 ## Database Schema
 
