@@ -255,12 +255,12 @@ social-media-api/
 │   │   ├── posts.controller.js
 │   │   ├── feed.controller.js
 │   │   └── admin.controller.js
-│   ├── services/
-│   │   ├── auth.service.js
-│   │   ├── user.service.js
-│   │   ├── post.service.js
-│   │   ├── follow.service.js
-│   │   └── analytics.service.js
+│   ├── validators/
+│   │   ├── auth.validator.js
+│   │   ├── user.validator.js
+│   │   ├── post.validator.js
+│   │   ├── follow.validator.js
+│   │   └── analytics.validator.js
 │   ├── models/
 │   │   ├── user.model.js
 │   │   ├── post.model.js
@@ -268,7 +268,6 @@ social-media-api/
 │   │   ├── follow.model.js
 │   │   └── like.model.js
 │   ├── routes/
-│   │   ├── index.js
 │   │   ├── auth.routes.js
 │   │   ├── users.routes.js
 │   │   ├── posts.routes.js
@@ -277,7 +276,6 @@ social-media-api/
 │   ├── middlewares/
 │   │   ├── auth.middleware.js
 │   │   ├── role.middleware.js
-│   │   ├── validation.middleware.js
 │   │   └── error.middleware.js
 │   ├── uploads/
 │   │   └── multer.js             # File upload config
@@ -286,8 +284,7 @@ social-media-api/
 ├── scripts/
 │   ├── seed.js                   # Database seeding
 │   └── reset-db.js               # Reset DB
-├── uploads/                      # Local file uploads (dev only)
-├── .env.example
+├── .env
 ├── .gitignore
 ├── package.json
 └── README.md
