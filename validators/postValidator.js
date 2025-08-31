@@ -1,9 +1,9 @@
 const Joi = require('joi')
 
 exports.postValidator = Joi.object({
-    authorName: Joi.object().required(),
+    authorName: Joi.string().required(),
     text: Joi.string().min(5).required(),
     image: Joi.string().optional(),
-    likes: Joi.array().required(),
-    comments: Joi.array().required()
+    likes: Joi.array().optional(),
+    comments: Joi.array().optional()
 })

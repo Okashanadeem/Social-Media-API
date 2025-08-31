@@ -1,6 +1,7 @@
 const Comment = require('../models/Comment')
 const Post = require('../models/Post')
 const User = require('../models/User')
+const { post } = require('../routes/auth')
 
 
 // zPOST SECTION
@@ -20,12 +21,30 @@ exports.createPost = async (req, res) => {
         res.status(500).json({ error: error.message })
     }
 }
+exports.getAllPosts = async (req, res) => {
+    const { page = 1, limit = 5 } = req.query
+
+    const skip = (parseInt(page) - 1) * parseInt(limit)
+    const userId = req.user.id
+    const posts = await Post.find({ authorName: userId })
+        .sort("-createdAt")
+        .skip(skip)
+        .limit(parseInt(limit))
+    const postsObj = posts.map(p => ({
+        ...p.toObject(),
+        likesCount: p.likes.length,
+        commentsCount: p.comments.length,
+        userLike: p.likes.some(id => id.toString() === req.user.id)
+    }))
+    res.json(postsObj)
+}
 
 exports.getPostById = async (req, res) => {
     const postById = await Post.findById(req.params.id)
     if (!postById) return res.status(404).json({ error: "The post you are searching for is no longer available" })
+    const postObj = postById.toObject()
     res.json({
-        ...postById,
+        ...postObj,
         likesCount: postById.likes.length,
         commentsCount: postById.comments.length,
         userLike: postById.likes.some(id => id.toString() === req.user.id)
@@ -36,7 +55,11 @@ exports.updatePostById = async (req, res) => {
     try {
         const existingPost = await Post.findById(req.params.id)
         if (!existingPost) return res.status(404).json({ error: "The post you are searching for is no longer available" })
-        if (existingPost.authorName !== req.user.id) return res.status(403).json({ error: "You're not authorized to perform this action" })
+        // if (existingPost.authorName !== req.user.id) {
+
+        //     console.log(existingPost.authorName, req.user.id)
+        // }
+        if (existingPost.authorName.toString() !== req.user.id) return res.status(403).json({ error: "You're not authorized to perform this action" })
 
         const updatedData = {}
         if (req.body.text) updatedData.text = req.body.text
@@ -57,7 +80,7 @@ exports.deletePostById = async (req, res) => {
     try {
         const existingPost = await Post.findById(req.params.id)
         if (!existingPost) return res.status(404).json({ error: "The post you are searching is no longer available" })
-        if (existingPost.authorName !== req.user.id && req.user.role !== 'admin') return res.status(403).json({ error: "You're not authorized to perform this action" })
+        if (existingPost.authorName.toString() !== req.user.id && req.user.role !== 'admin') return res.status(403).json({ error: "You're not authorized to perform this action" })
         await Post.findByIdAndDelete(req.params.id)
         res.json({ message: "Post deleted successfully" })
 
@@ -119,11 +142,11 @@ exports.createComments = async (req, res) => {
     }
 }
 
-exports.getComments = async (req,res) => {
+exports.getComments = async (req, res) => {
     const { page = 1, limit = 5 } = req.query
 
     const skip = (parseInt(page) - 1) * parseInt(limit)
-    const comments = await Comment.find({post: req.params.id})
+    const comments = await Comment.find({ post: req.params.id })
         .sort("-createdAt")
         .skip(skip)
         .limit(parseInt(limit))
