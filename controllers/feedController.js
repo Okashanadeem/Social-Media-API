@@ -10,6 +10,7 @@ exports.getFeed = async (req, res) => {
             order = 'desc'
         } = req.query
         const userId = req.user.id
+        console.log(userId)
     
         const skip = (parseInt(page) - 1) * parseInt(limit)
         const sortBy = {}
@@ -18,7 +19,7 @@ exports.getFeed = async (req, res) => {
         const user = await User.findById(userId).select('following')
         const followingId = user.following.concat(userId)
     
-        const posts = await Post.find({ author: {$in: followingId} })
+        const posts = await Post.find({ authorName: {$in: followingId} })
         .sort(sortBy)
         .skip(skip)
         .limit(parseInt(limit))
