@@ -39,7 +39,7 @@ A secure, production-ready Node.js + Express REST API backend for a social media
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/social-media-api.git
+   git clone https://github.com/Okashanadeem/Social-Media-API.git
    cd social-media-api
    ```
 
@@ -277,7 +277,7 @@ Social-Media-API/
 │   │   └── error.middleware.js
 │   ├── uploads/
 │   │   └── multer.js             # File upload config
-│   ├── app.js                    # Express app config
+│   ├── index.js                   # Express app config
 │   └── server.js                 # Server entry point
 ├── scripts/
 │   ├── seed.js                   # Database seeding
