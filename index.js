@@ -10,6 +10,8 @@ const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin');
 const postRoute = require('./routes/postRoute');
 const feedRoute = require('./routes/feedRoute');
+const followRoute = require('./routes/followRoute');
+const userRoute = require('./routes/userRoute');
 
 // Middlewares
 const responseHandler = require('./middlewares/responseMiddleware');
@@ -31,6 +33,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/post', postRoute);
 app.use('/api/feed', feedRoute);
+app.use('/api/follow', followRoute);
+app.use('/api/users', userRoute);
 
 // Health check
 app.get('/', (req, res) => {
