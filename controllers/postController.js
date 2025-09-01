@@ -2,6 +2,7 @@ const Comment = require('../models/Comment')
 const Post = require('../models/Post')
 const User = require('../models/User')
 const { post } = require('../routes/auth')
+const mongoose = require('mongoose')
 
 
 // zPOST SECTION
@@ -27,6 +28,13 @@ exports.getAllPosts = async (req, res) => {
     const skip = (parseInt(page) - 1) * parseInt(limit)
     const userId = req.user.id
     const posts = await Post.find({ authorName: userId })
+        .populate('authorName', 'username')
+        .populate('likes', 'username')
+        .populate({
+            path: 'comments',
+            select: 'authorName text',
+            populate: { path: 'authorName', select: 'username' }
+        })
         .sort("-createdAt")
         .skip(skip)
         .limit(parseInt(limit))
@@ -34,26 +42,42 @@ exports.getAllPosts = async (req, res) => {
         ...p.toObject(),
         likesCount: p.likes.length,
         commentsCount: p.comments.length,
-        userLike: p.likes.some(id => id.toString() === req.user.id)
+        userLike: p.likes.some(user => user._id.toString() === req.user.id)
     }))
-    res.json(postsObj)
+    const totalPosts = await Post.countDocuments({ authorName: userId })
+    res.json({
+        page: parseInt(page),
+        pageSize: parseInt(limit),
+        totalPosts: totalPosts,
+        postsObj
+    })
 }
 
 exports.getPostById = async (req, res) => {
     const postById = await Post.findById(req.params.id)
+        .populate('authorName', 'username')
+        .populate('likes', 'username')
+        .populate({
+            path: 'comments',
+            select: 'authorName text',
+            populate: { path: 'authorName', select: 'username' }
+        })
+    // not working on nested path
+    // .populate('comments', 'text authorName')
+    // .populate('comments.authorName', 'username')
     if (!postById) return res.status(404).json({ error: "The post you are searching for is no longer available" })
-    const postObj = postById.toObject()
     res.json({
-        ...postObj,
+        ...postById.toObject(),
         likesCount: postById.likes.length,
         commentsCount: postById.comments.length,
-        userLike: postById.likes.some(id => id.toString() === req.user.id)
+        userLike: postById.likes.some(user => user._id.toString() === req.user.id)
     })
 }
 
 exports.updatePostById = async (req, res) => {
     try {
         const existingPost = await Post.findById(req.params.id)
+
         if (!existingPost) return res.status(404).json({ error: "The post you are searching for is no longer available" })
         // if (existingPost.authorName !== req.user.id) {
 
@@ -70,6 +94,13 @@ exports.updatePostById = async (req, res) => {
             { $set: updatedData },
             { new: true, runValidators: true }
         )
+            .populate('authorName', 'username')
+            .populate('likes', 'username')
+            .populate({
+                path: 'comments',
+                select: 'authorName text',
+                populate: { path: 'authorName', select: 'username' }
+            })
         res.json(post)
     } catch (error) {
         res.status(500).json({ error: error.message })
@@ -147,8 +178,34 @@ exports.getComments = async (req, res) => {
 
     const skip = (parseInt(page) - 1) * parseInt(limit)
     const comments = await Comment.find({ post: req.params.id })
+        .populate('authorName', 'username')
         .sort("-createdAt")
         .skip(skip)
         .limit(parseInt(limit))
-    res.json(comments)
+    const totalComments = await Comment.countDocuments({post: req.params.id})
+    res.json({
+        page: parseInt(page),
+        pageSize: parseInt(limit),
+        totalComments: totalComments,
+        comments
+    })
 }
+exports.getAllComments = async (req, res) => {
+    const { page = 1, limit = 5 } = req.query
+    const skip = (parseInt(page) - 1) * parseInt(limit)
+    const userId = req.user.id
+    
+    const allComments = await Comment.find({ authorName: userId })
+        .sort('-createdAt')
+        .skip(skip)
+        .limit(parseInt(limit))
+    console.log(allComments.authorName, userId);
+    const totalComments = await Comment.countDocuments({ authorName: userId })
+    res.json({
+        page: parseInt(page),
+        pageSize: parseInt(limit),
+        totalComments: totalComments,
+        allComments
+    })
+}
+
