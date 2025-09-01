@@ -1,10 +1,11 @@
-import express from "express";
-const router = express.Router();
-import { auth } from "../middleware/auth.js";
-import { requireRole } from "../middleware/requireRole.js";
+const express = require("express");
+const { auth } = require("../middlewares/auth.js");
+const { requireRole } = require("../middlewares/requireRole.js");
+
+const router = express.Router()
 
 router.get("/dashboard", auth, requireRole("admin"), (req, res) => {
   res.json({ message: "Welcome, admin!" });
 });
 
-export default router;
+module.exports = router

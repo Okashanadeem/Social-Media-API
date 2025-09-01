@@ -1,52 +1,23 @@
-import "dotenv/config.js";
-import express from "express";
-import { connectDB } from "./config/db.js";
-import authRoutes from "./routes/auth.js";
-import adminRoutes from "./routes/admin.js";
-import swaggerUi from "swagger-ui-express";
-import swaggerJsdoc from "swagger-jsdoc";
+require('dotenv').config()
+const express = require('express')
+const app = express()
+const authRoutes = require('./routes/auth')
+const adminRoutes = require('./routes/admin')
+const postRoute = require('./routes/postRoute')
+const feedRoute = require('./routes/feedRoute')
+const db = require('./config/db')
 
-const app = express();
-app.use(express.json());
+db()
 
-app.use("/api/auth", authRoutes);
-app.use("/api/admin", adminRoutes);
+app.use(express.json())
 
-app.get("/", (req, res) => {
-  res.send("Auth Backend is running");
-});
+app.use('/api/auth', authRoutes)
+app.use('/api/admin', adminRoutes)
+app.use('/api/post', postRoute)
+app.use('/api/feed', feedRoute)
 
+const PORT = process.env.PORT
 
-const swaggerOptions = {
-  definition: {
-    openapi: "3.0.0",
-    info: {
-      title: "Auth Backend API",
-      version: "1.0.0",
-      description: "API documentation for Auth Backend",
-    },
-    servers: [
-      {
-        url: "http://localhost:4000",
-      },
-    ],
-  },
-  apis: ["./src/routes/*.js"], 
-};
-
-const swaggerSpec = swaggerJsdoc(swaggerOptions);
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
-const port = process.env.PORT || 4000;
-const mongoUri = process.env.MONGODB_URI;
-
-if (!mongoUri || !process.env.JWT_SECRET) {
-  console.error("Missing MONGODB_URI or JWT_SECRET in environment");
-  process.exit(1);
-}
-
-connectDB(mongoUri).then(() => {
-  app.listen(port, () => {
-    console.log(`Server listening on http://localhost:${port}`);
-  });
-});
+app.listen(PORT, ()=>{
+    console.log(`Server running on port ${PORT}`)
+})
