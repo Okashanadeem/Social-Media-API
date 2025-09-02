@@ -1,7 +1,7 @@
-const Comment = require('../models/Comment')
-const Post = require('../models/Post')
-const User = require('../models/User')
-const { post } = require('../routes/auth')
+const Comment = require('../models/commentModel')
+const Post = require('../models/postModel')
+const User = require('../models/userModel')
+const { post } = require('../routes/authRoutes')
 const mongoose = require('mongoose')
 
 

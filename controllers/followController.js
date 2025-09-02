@@ -1,4 +1,4 @@
-const User = require("../models/User");
+const User = require("../models/userModel");
 
 exports.followToggle = async (req, res) => {
     const { id } = req.params

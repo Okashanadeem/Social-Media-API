@@ -1,5 +1,5 @@
 const { getProfile, updateProfile, setStatus } = require('../controllers/userController');
-const { auth } = require('../middlewares/auth');
+const { auth } = require('../middlewares/authMiddleware');
 const express = require('express');
 const router = express.Router();
 const upload = require('../middlewares/upload');

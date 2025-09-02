@@ -248,44 +248,59 @@ All API responses follow a consistent format:
 
 ```
 Social-Media-API/
-│   ├── controllers/
-│   │   ├── auth.controller.js
-│   │   ├── users.controller.js
-│   │   ├── posts.controller.js
-│   │   ├── feed.controller.js
-│   │   └── admin.controller.js
-│   ├── validators/
-│   │   ├── auth.validator.js
-│   │   ├── user.validator.js
-│   │   ├── post.validator.js
-│   │   ├── follow.validator.js
-│   │   └── analytics.validator.js
-│   ├── models/
-│   │   ├── user.model.js
-│   │   ├── post.model.js
-│   │   └── comment.model.js
-│   ├── routes/
-│   │   ├── auth.routes.js
-│   │   ├── users.routes.js
-│   │   ├── posts.routes.js
-│   │   ├── feed.routes.js
-│   │   └── admin.routes.js
-│   ├── middlewares/
-│   │   ├── auth.middleware.js
-│   │   ├── role.middleware.js
-│   │   ├── multer.middleware.js
-│   │   └── error.middleware.js
-│   ├── uploads/
-│   │   └── multer.js             # File upload config
-│   ├── index.js                   # Express app config
-│   └── server.js                 # Server entry point
-├── scripts/
-│   ├── seed.js                   # Database seeding
-│   └── reset-db.js               # Reset DB
-├── .env
-├── .gitignore
-├── package.json
-└── README.md
+│
+├── controllers/                      # Handle business logic for each feature
+│   ├── authController.js              # Signup, login, logout, token handling
+│   ├── userController.js              # Profile, update, delete, user details
+│   ├── postController.js              # CRUD operations for posts
+│   ├── feedController.js              # Newsfeed (fetch posts from followed users)
+│   ├── followController.js            # Follow/unfollow users
+│   ├── adminController.js             # Admin-only actions (suspend, manage users)
+│   └── statsController.js             # Analytics (top posts, active users)
+│
+├── validators/                        # Request body validation (Joi/Yup)
+│   ├── commentValidator.js            # Validation rules for comments
+│   └── postValidator.js               # Validation rules for posts
+│
+├── models/                            # MongoDB schemas (Mongoose models)
+│   ├── userModel.js                   # User schema (auth, profile, role)
+│   ├── postModel.js                   # Post schema (likes, comments, media)
+│   └── commentModel.js                # Comment schema (text, user, post ref)
+│
+├── routes/                            # API endpoints mapping to controllers
+│   ├── authRoutes.js                  # /api/auth → login/register
+│   ├── userRoutes.js                  # /api/users → user-related endpoints
+│   ├── postRoutes.js                  # /api/posts → CRUD posts
+│   ├── statsRoutes.js                 # /api/stats → analytics endpoints
+│   ├── followRoutes.js                # /api/follow → follow/unfollow users
+│   ├── feedRoutes.js                  # /api/feed → fetch timeline posts
+│   └── adminRoutes.js                 # /api/admin → admin-only APIs
+│
+├── middlewares/                       # Reusable Express middlewares
+│   ├── authMiddleware.js              # Check JWT, attach user to request
+│   ├── requireRole.js                 # Restrict access by role (admin/user)
+│   ├── responseMiddleware.js          # Standardized API response format
+│   ├── upload.js                      # File upload (Multer config)
+│   ├── validate.js                    # Validate requests against schemas
+│   └── errorMiddleware.js             # Global error handler
+│
+├── config/
+│   └── db.js                          # MongoDB connection setup
+│
+├── postman-collection/
+│   └── socialMedia-api.postman_collection.json  # Prebuilt Postman tests
+│
+├── uploads/                           # Stores uploaded profile images/posts
+│
+├── utils/
+│   └── seed.js                        # Seed database with test data
+│
+├── .env                               # Environment variables (DB, JWT secret)
+├── .gitignore                         # Ignore node_modules, .env, etc.
+├── personal.txt                       # Personal notes (ignored in git)
+├── package.json                       # Dependencies + scripts
+├── README.md                          # Project documentation
+└── index.js                           # Main entry (Express app & routes)
 ```
 
 ## Development
@@ -429,8 +444,8 @@ Below is a clear, final module division for the three team members. Branch names
 
 ## **Okasha Nadeem**
 
-**Branch:** `feature/core-upload`
-**PR title:** `feat(core+upload): scaffolding, uploads, admin basics`
+**Branch:** `feature/global-middleware-setup`,`feature/admin-stats-apis`
+**PR title:** `scaffolding, middlewares, admin basics`
 
 **Main tasks**
 
