@@ -4,7 +4,7 @@ const router = express.Router()
 const { createPost, getPostById, updatePostById, deletePostById, toggleLike, createComments, getComments, getAllPosts, getAllComments } = require('../controllers/postController')
 const validate = require('../middlewares/validate')
 const { postValidator } = require('../validators/postValidator')
-const { auth } = require('../middlewares/auth')
+const { auth } = require('../middlewares/authMiddleware')
 
 router.post('/', auth, validate(postValidator), createPost)
 router.get('/', auth, getAllPosts)

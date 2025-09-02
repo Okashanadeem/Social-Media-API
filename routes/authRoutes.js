@@ -1,8 +1,8 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const  User = require("../models/User.js");
-const { auth } = require("../middlewares/auth.js");
+const User = require("../models/userModel.js");
+const { auth } = require("../middlewares/authMiddleware.js");
 
 const router = express.Router();
 
@@ -14,56 +14,7 @@ function signToken(user) {
   );
 }
 
-/**
- * @swagger
- * /api/auth/register:
- *   post:
- *     summary: Register a new user
- *     tags: [Auth]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               username:
- *                 type: string
- *               email:
- *                 type: string
- *               password:
- *                 type: string
- *     responses:
- *       201:
- *         description: User registered successfully
- *       400:
- *         description: Bad request
- */
-
-/**
- * @swagger
- * /api/auth/login:
- *   post:
- *     summary: Login a user
- *     tags: [Auth]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               email:
- *                 type: string
- *               password:
- *                 type: string
- *     responses:
- *       200:
- *         description: JWT token returned
- *       400:
- *         description: Invalid credentials
- */
-
+// Register
 router.post("/register", async (req, res) => {
   const { username, email, password } = req.body;
   try {
@@ -77,13 +28,16 @@ router.post("/register", async (req, res) => {
 });
 
 
+// Login
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ email });
     if (!user) return res.status(400).json({ error: "Invalid credentials" });
+
     const valid = await bcrypt.compare(password, user.password);
     if (!valid) return res.status(400).json({ error: "Invalid credentials" });
+
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
@@ -100,4 +54,11 @@ router.get("/me", auth, async (req, res) => {
   res.json(user);
 });
 
-module.exports = router
+
+// Logout
+router.post("/logout", auth, (req, res) => {
+  // Since JWT is stateless, we simply tell client to discard the token
+  res.json({ message: "Logged out" });
+});
+
+module.exports = router;

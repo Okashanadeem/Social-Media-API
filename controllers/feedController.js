@@ -1,5 +1,5 @@
-const Post = require("../models/Post");
-const User = require("../models/User")
+const Post = require("../models/postModel");
+const User = require("../models/userModel")
 
 exports.getFeed = async (req, res) => {
     try {

@@ -1,300 +1,330 @@
 {
-	"info": {
-		"_postman_id": "3ec942c1-9362-4b07-8278-9eab7c4796b8",
-		"name": "socialMedia-api",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "46823724"
-	},
-	"item": [
-		{
-			"name": "login",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"john@example.com\",\r\n    \"password\": \"password123\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:5000/api/auth/login",
-					"host": [
-						"localhost"
-					],
-					"port": "5000",
-					"path": [
-						"api",
-						"auth",
-						"login"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "post",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjQ5ZmRiOThiYjYwZWYxZTZlZGViOCIsImlhdCI6MTc1NjY3MjkxMCwiZXhwIjoxNzU2Njc2NTEwfQ.Y2uLtSv1MsoMNjSgoFjjlzXEdHCp8OWp9amfu3AqJ_I",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"authorName\": \"68b49fdb98bb60ef1e6edeb8\",\r\n    \"text\": \"Hello Everyone, Wassup?\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:5000/api/post",
-					"host": [
-						"localhost"
-					],
-					"port": "5000",
-					"path": [
-						"api",
-						"post"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "post",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjQ5ZmRiOThiYjYwZWYxZTZlZGViOCIsImlhdCI6MTc1NjY3MjkxMCwiZXhwIjoxNzU2Njc2NTEwfQ.Y2uLtSv1MsoMNjSgoFjjlzXEdHCp8OWp9amfu3AqJ_I",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:5000/api/post/",
-					"host": [
-						"localhost"
-					],
-					"port": "5000",
-					"path": [
-						"api",
-						"post",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "updatePost",
-			"request": {
-				"method": "PUT",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjQ5ZmRiOThiYjYwZWYxZTZlZGViOCIsImlhdCI6MTc1NjY2OTIyOCwiZXhwIjoxNzU2NjcyODI4fQ.LgjoPbDWTk_c151a-Mm02LBIFeYC0-t9i-0Kg5qJKjU",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"authorName\": \"68b49fdb98bb60ef1e6edeb8\",\r\n    \"text\": \"Hello Everyone!, Wassup??\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:5000/api/post/68b4a6cf33e90c43246c7722",
-					"host": [
-						"localhost"
-					],
-					"port": "5000",
-					"path": [
-						"api",
-						"post",
-						"68b4a6cf33e90c43246c7722"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "deletePost",
-			"request": {
-				"method": "DELETE",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjQ5ZmRiOThiYjYwZWYxZTZlZGViOCIsImlhdCI6MTc1NjY3MjkxMCwiZXhwIjoxNzU2Njc2NTEwfQ.Y2uLtSv1MsoMNjSgoFjjlzXEdHCp8OWp9amfu3AqJ_I",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
-				"url": {
-					"raw": "localhost:5000/api/post/68b4a6cf33e90c43246c7722",
-					"host": [
-						"localhost"
-					],
-					"port": "5000",
-					"path": [
-						"api",
-						"post",
-						"68b4a6cf33e90c43246c7722"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "toggleLike",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjNjMDk5NjFhNjhhODg1ZDc1YWE2NSIsImlhdCI6MTc1NjY3MzI1OCwiZXhwIjoxNzU2Njc2ODU4fQ.wgidiuko2WDSlSFUqrEuKvdgYC7C6SSU9YIGs-t4aug",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:5000/api/post/68b4b40d1b9f26ec3489518e/like",
-					"host": [
-						"localhost"
-					],
-					"port": "5000",
-					"path": [
-						"api",
-						"post",
-						"68b4b40d1b9f26ec3489518e",
-						"like"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "comments",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjNjMDk5NjFhNjhhODg1ZDc1YWE2NSIsImlhdCI6MTc1NjY3MzI1OCwiZXhwIjoxNzU2Njc2ODU4fQ.wgidiuko2WDSlSFUqrEuKvdgYC7C6SSU9YIGs-t4aug",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"text\": \"Good to see you back online!\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:5000/api/post/68b4b40d1b9f26ec3489518e/comments",
-					"host": [
-						"localhost"
-					],
-					"port": "5000",
-					"path": [
-						"api",
-						"post",
-						"68b4b40d1b9f26ec3489518e",
-						"comments"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "comments",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjNjMDk5NjFhNjhhODg1ZDc1YWE2NSIsImlhdCI6MTc1NjY3MzI1OCwiZXhwIjoxNzU2Njc2ODU4fQ.wgidiuko2WDSlSFUqrEuKvdgYC7C6SSU9YIGs-t4aug",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "localhost:5000/api/post/68b4b40d1b9f26ec3489518e/comments",
-					"host": [
-						"localhost"
-					],
-					"port": "5000",
-					"path": [
-						"api",
-						"post",
-						"68b4b40d1b9f26ec3489518e",
-						"comments"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "feed",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4YjNjMDk5NjFhNjhhODg1ZDc1YWE2NSIsImlhdCI6MTc1NjY3MzI1OCwiZXhwIjoxNzU2Njc2ODU4fQ.wgidiuko2WDSlSFUqrEuKvdgYC7C6SSU9YIGs-t4aug",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "localhost:5000/api/feed",
-					"host": [
-						"localhost"
-					],
-					"port": "5000",
-					"path": [
-						"api",
-						"feed"
-					]
-				}
-			},
-			"response": []
-		}
-	]
+  "info": {
+    "_postman_id": "3ec942c1-9362-4b07-8278-9eab7c4796b8",
+    "name": "socialMedia-api",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "46823724"
+  },
+  "item": [
+    {
+      "name": "register",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"John Doe\",\r\n    \"username\": \"johndoe\",\r\n    \"email\": \"john@example.com\",\r\n    \"password\": \"password123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:5000/api/auth/register",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "auth", "register"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "login",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\": \"john@example.com\",\r\n    \"password\": \"password123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "localhost:5000/api/auth/login",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "auth", "login"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "logout",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "localhost:5000/api/auth/logout",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "auth", "logout"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "post",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"authorName\": \"{{userId}}\",\r\n    \"text\": \"Hello Everyone, Wassup?\"\r\n}"
+        },
+        "url": {
+          "raw": "localhost:5000/api/post",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "post"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getPosts",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+        ],
+        "url": {
+          "raw": "localhost:5000/api/post",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "post"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "updatePost",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"authorName\": \"{{userId}}\",\r\n    \"text\": \"Updated post text\"\r\n}"
+        },
+        "url": {
+          "raw": "localhost:5000/api/post/{{postId}}",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "post", "{{postId}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "deletePost",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+        ],
+        "url": {
+          "raw": "localhost:5000/api/post/{{postId}}",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "post", "{{postId}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "toggleLike",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+        ],
+        "url": {
+          "raw": "localhost:5000/api/post/{{postId}}/like",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "post", "{{postId}}", "like"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "addComment",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"text\": \"Good to see you back online!\"\r\n}"
+        },
+        "url": {
+          "raw": "localhost:5000/api/post/{{postId}}/comments",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "post", "{{postId}}", "comments"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getComments",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+        ],
+        "url": {
+          "raw": "localhost:5000/api/post/{{postId}}/comments",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "post", "{{postId}}", "comments"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "feed",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+        ],
+        "url": {
+          "raw": "localhost:5000/api/feed",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "feed"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "stats - topPosts",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+        ],
+        "url": {
+          "raw": "localhost:5000/api/stats/top-posts?days=7&limit=5",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "stats", "top-posts"],
+          "query": [
+            { "key": "days", "value": "7" },
+            { "key": "limit", "value": "5" }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "admin - getAllUsers",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{adminToken}}", "type": "text" }
+        ],
+        "url": {
+          "raw": "localhost:5000/api/admin/users",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "admin", "users"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "admin - deleteUser",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{adminToken}}", "type": "text" }
+        ],
+        "url": {
+          "raw": "localhost:5000/api/admin/users/{{userId}}",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "admin", "users", "{{userId}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "admin - deletePost",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{adminToken}}", "type": "text" }
+        ],
+        "url": {
+          "raw": "localhost:5000/api/admin/posts/{{postId}}",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "admin", "posts", "{{postId}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "admin - getStats",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{adminToken}}", "type": "text" }
+        ],
+        "url": {
+          "raw": "localhost:5000/api/admin/stats",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "admin", "stats"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "admin - activeUsers",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{adminToken}}", "type": "text" }
+        ],
+        "url": {
+          "raw": "localhost:5000/api/admin/stats/active-users?days=7&limit=5",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "admin", "stats", "active-users"],
+          "query": [
+            { "key": "days", "value": "7" },
+            { "key": "limit", "value": "5" }
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    { "key": "token", "value": "" },
+    { "key": "adminToken", "value": "" },
+    { "key": "userId", "value": "" },
+    { "key": "postId", "value": "" }
+  ]
 }

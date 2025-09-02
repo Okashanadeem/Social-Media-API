@@ -6,12 +6,13 @@ const morgan = require('morgan');
 const db = require('./config/db');
 
 // Routes
-const authRoutes = require('./routes/auth');
-const adminRoutes = require('./routes/admin');
+const authRoutes = require('./routes/authRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 const postRoute = require('./routes/postRoute');
 const feedRoute = require('./routes/feedRoute');
 const followRoute = require('./routes/followRoute');
 const userRoute = require('./routes/userRoute');
+const statsRoutes = require('./routes/statsRoutes');
 
 // Middlewares
 const responseHandler = require('./middlewares/responseMiddleware');
@@ -35,6 +36,7 @@ app.use('/api/post', postRoute);
 app.use('/api/feed', feedRoute);
 app.use('/api/follow', followRoute);
 app.use('/api/users', userRoute);
+app.use('/api/stats', statsRoutes);
 
 // Health check
 app.get('/', (req, res) => {
