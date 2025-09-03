@@ -15,7 +15,7 @@ exports.updateProfile = async (req, res) => {
       req.user.id,
       { $set: update },
       { new: true }
-    );
+    ).select('-password')
 
     res.json({ user });
   } catch (err) {
@@ -28,7 +28,9 @@ exports.getProfile = async (req, res) => {
   try {
     const userId = req.params.id || req.user.id;
     const user = await User.findById(userId)
-      .select('username bio avatar followersCount followingCount')
+      .select('-role -password')
+      .populate('following', 'username')
+      .populate('followers', 'username')
       .lean();
 
     if (!user) return res.status(404).json({ error: 'User not found' });

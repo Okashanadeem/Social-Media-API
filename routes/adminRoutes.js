@@ -8,7 +8,7 @@ const adminController = require('../controllers/adminController');
 
 // Admin-only routes
 router.get('/users', auth, requireRole('admin'), adminController.getAllUsers);
-router.delete('/users/:id', auth, requireRole('admin'), adminController.deleteUser);
+router.delete('/users/:username', auth, requireRole('admin'), adminController.deleteUser);
 router.delete('/posts/:id', auth, requireRole('admin'), adminController.deletePost);
 router.get('/stats', auth, requireRole('admin'), adminController.getStats);
 

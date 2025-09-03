@@ -119,6 +119,34 @@ exports.deletePostById = async (req, res) => {
         res.status(500).json({ error: error.message })
     }
 }
+exports.getPostByUsername = async (req, res) => {
+    const { page = 1, limit = 5 } = req.query
+    const { username } = req.params
+    // console.log('username by params', req.params.username);
+    const user = await User.findOne({ username: username })
+    if (!user) return res.status(404).json({ error: "User not found" })
+    const skip = (parseInt(page) - 1) * parseInt(limit)
+    const totalPosts = await Post.countDocuments({ authorName: user._id })
+    const userPosts = await Post.find({ authorName: user._id })
+        .populate('authorName', 'username')
+        .populate('likes', 'username')
+        .populate({
+            path: 'comments',
+            select: 'authorName text',
+            populate: { path: 'authorName', select: 'username' }
+        })
+        .sort('-createdAt')
+        .skip(skip)
+        .limit(limit)
+
+    if (userPosts.length === 0) return res.status(404).json({ error: "No posts found for this user" })
+    res.json({
+        page: parseInt(page),
+        pageSize: parseInt(limit),
+        totalPosts: totalPosts,
+        userPosts
+    })
+}
 
 // LIKE SECTION
 
@@ -196,10 +224,16 @@ exports.getAllComments = async (req, res) => {
     const userId = req.user.id
     
     const allComments = await Comment.find({ authorName: userId })
+        .populate({
+            path: 'post',
+            select: 'authorName',
+            populate: {path: "authorName", select: "username"}
+        })
+        .populate('authorName', 'username')
         .sort('-createdAt')
         .skip(skip)
         .limit(parseInt(limit))
-    console.log(allComments.authorName, userId);
+    // console.log(allComments.authorName, userId);
     const totalComments = await Comment.countDocuments({ authorName: userId })
     res.json({
         page: parseInt(page),

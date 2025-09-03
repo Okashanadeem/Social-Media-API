@@ -5,6 +5,7 @@ const User = require("../models/userModel.js");
 const { auth } = require("../middlewares/authMiddleware.js");
 const validate = require('../middlewares/validate.js');
 const { userValidator } = require("../validators/userValidator.js");
+const upload = require("../middlewares/upload.js");
 
 const router = express.Router();
 
@@ -17,11 +18,11 @@ function signToken(user) {
 }
 
 // Register
-router.post("/register", validate(userValidator), async (req, res) => {
-  const { username, email, password } = req.body;
+router.post("/register", upload.single("avatar"), validate(userValidator), async (req, res) => {
+  const { username, email, password, bio, avatar } = req.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ username, email, password: hashedPassword });
+    const user = new User({ username, email, password: hashedPassword, bio, avatar: req.file ? `/uploads/avatars/${req.file.filename}` : undefined });
     await user.save();
     res.status(201).json({ message: "User registered successfully" });
   } catch (err) {
@@ -43,7 +44,7 @@ router.post("/login", async (req, res) => {
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "6h" }
     );
     res.json({ token });
   } catch (err) {
@@ -51,16 +52,12 @@ router.post("/login", async (req, res) => {
   }
 });
 
-router.get("/me", auth, async (req, res) => {
-  const user = await User.findById(req.user.id).select("-password");
-  res.json(user);
-});
 
 
-// Logout
-router.post("/logout", auth, (req, res) => {
-  // Since JWT is stateless, we simply tell client to discard the token
-  res.json({ message: "Logged out" });
-});
+// // Logout
+// router.post("/logout", auth, (req, res) => {
+//   // Since JWT is stateless, we simply tell client to discard the token
+//   res.json({ message: "Logged out" });
+// });
 
 module.exports = router;

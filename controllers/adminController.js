@@ -4,8 +4,20 @@ const Comment = require('../models/commentModel');
 
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.find().select("username email role createdAt");
-    return res.json({ success: true, users });
+    const { page = 1, limit = 5 } = req.query;
+    const skip = (parseInt(page) - 1) * parseInt(limit)
+    const totalUsers = await User.countDocuments({})
+    const users = await User.find().select("username email role createdAt")
+    .sort('-createdAt')
+    .skip(skip)
+    .limit(limit)
+    return res.json({ success: true, 
+      totalUsers: totalUsers,
+      page: parseInt(page),
+      pageSize: parseInt(limit),
+      users
+
+     });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ success: false, message: "Server error" });
@@ -14,20 +26,22 @@ exports.getAllUsers = async (req, res) => {
 
 exports.deleteUser = async (req, res) => {
   try {
-    const { id } = req.params;
-    const deleted = await User.findByIdAndDelete(id);
+    const { username } = req.params;
+    const userName = await User.findOne({ username: username })
+    if(!userName) return res.status(404).json({error: `User not found`})
+    const deleted = await User.findByIdAndDelete(userName._id);
     if (!deleted) {
       return res.status(404).json({ success: false, message: "User not found" });
     }
 
-    const userPosts = await Post.find({ authorName: id }).select('_id').lean();
+    const userPosts = await Post.find({ authorName: userName._id });
     const postIds = userPosts.map(p => p._id);
 
-    await Comment.deleteMany({ authorName: id });
+    await Comment.deleteMany({ authorName: userName._id });
     if (postIds.length) await Comment.deleteMany({ post: { $in: postIds } });
-    await Post.deleteMany({ authorName: id });
+    await Post.deleteMany({ authorName: userName._id });
 
-    return res.json({ success: true, message: "User and related content deleted", id });
+    return res.json({ success: true, message: "User and related content deleted", name: userName });
   } catch (err) {
     console.error(err);
     return res.status(500).json({ success: false, message: "Server error" });
