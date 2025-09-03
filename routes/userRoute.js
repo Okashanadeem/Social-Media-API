@@ -1,4 +1,4 @@
-const { getProfile, updateProfile, setStatus } = require('../controllers/userController');
+const { getProfile, updateProfile, setStatus, getUserByUsername } = require('../controllers/userController');
 const { auth } = require('../middlewares/authMiddleware');
 const express = require('express');
 const router = express.Router();
@@ -68,6 +68,8 @@ router.get('/profile', auth, getProfile);
  *       200:
  *         description: Status updated
  */
+router.get('/:username', getUserByUsername)
 router.patch('/status/:id', auth, requireRole('admin'), setStatus);
+
 
 module.exports = router;
