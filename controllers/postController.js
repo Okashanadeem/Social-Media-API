@@ -5,8 +5,9 @@ const { post } = require('../routes/authRoutes')
 const mongoose = require('mongoose')
 
 
-// zPOST SECTION
+// POST SECTION
 
+// CREATE POST
 exports.createPost = async (req, res) => {
     try {
         const { text } = req.body
@@ -22,6 +23,7 @@ exports.createPost = async (req, res) => {
         res.status(500).json({ error: error.message })
     }
 }
+// GET ALL POSTS
 exports.getAllPosts = async (req, res) => {
     const { page = 1, limit = 5 } = req.query
 
@@ -52,7 +54,7 @@ exports.getAllPosts = async (req, res) => {
         postsObj
     })
 }
-
+// GET POST BY ID
 exports.getPostById = async (req, res) => {
     const postById = await Post.findById(req.params.id)
         .populate('authorName', 'username')
@@ -73,7 +75,7 @@ exports.getPostById = async (req, res) => {
         userLike: postById.likes.some(user => user._id.toString() === req.user.id)
     })
 }
-
+// UPDATE POST
 exports.updatePostById = async (req, res) => {
     try {
         const existingPost = await Post.findById(req.params.id)
@@ -106,7 +108,7 @@ exports.updatePostById = async (req, res) => {
         res.status(500).json({ error: error.message })
     }
 }
-
+// DELETE POST
 exports.deletePostById = async (req, res) => {
     try {
         const existingPost = await Post.findById(req.params.id)
@@ -119,6 +121,7 @@ exports.deletePostById = async (req, res) => {
         res.status(500).json({ error: error.message })
     }
 }
+// GET POST BY USERNAME
 exports.getPostByUsername = async (req, res) => {
     const { page = 1, limit = 5 } = req.query
     const { username } = req.params
@@ -148,8 +151,10 @@ exports.getPostByUsername = async (req, res) => {
     })
 }
 
+
 // LIKE SECTION
 
+// TOGGLE LIKE
 exports.toggleLike = async (req, res) => {
     try {
         const postId = req.params.id
@@ -177,8 +182,10 @@ exports.toggleLike = async (req, res) => {
     }
 }
 
+
 // COMMENTS SECTION
 
+// CREATE COMMENT
 exports.createComments = async (req, res) => {
     try {
         const { text } = req.body
@@ -200,7 +207,7 @@ exports.createComments = async (req, res) => {
         res.status(400).json({ error: error.message })
     }
 }
-
+// GET COMMENTS
 exports.getComments = async (req, res) => {
     const { page = 1, limit = 5 } = req.query
 
@@ -218,6 +225,71 @@ exports.getComments = async (req, res) => {
         comments
     })
 }
+// UPDATE COMMENT
+exports.updateCommentById = async (req, res) => {
+    try {
+        const { id, commentId } = req.params; // postId, commentId
+        const userId = req.user.id;
+
+        const comment = await Comment.findById(commentId);
+        if (!comment) return res.status(404).json({ error: "Comment not found" });
+
+        // Ensure comment belongs to the post
+        if (comment.post.toString() !== id) {
+            return res.status(400).json({ error: "Comment does not belong to this post" });
+        }
+
+        // Only author or admin can update
+        if (comment.authorName.toString() !== userId && req.user.role !== 'admin') {
+            return res.status(403).json({ error: "You're not authorized to update this comment" });
+        }
+
+        // Update text only
+        if (!req.body.text) return res.status(400).json({ error: "Text is required" });
+
+        comment.text = req.body.text;
+        await comment.save();
+
+        res.json({ message: "Comment updated successfully", comment });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+// DELETE COMMENT
+exports.deleteCommentById = async (req, res) => {
+    try {
+        const { id, commentId } = req.params; // postId, commentId
+        const userId = req.user.id;
+
+        const comment = await Comment.findById(commentId);
+        if (!comment) return res.status(404).json({ error: "Comment not found" });
+
+        // Ensure comment belongs to the post
+        if (comment.post.toString() !== id) {
+            return res.status(400).json({ error: "Comment does not belong to this post" });
+        }
+
+        // Only author or admin can delete
+        if (comment.authorName.toString() !== userId && req.user.role !== 'admin') {
+            return res.status(403).json({ error: "You're not authorized to delete this comment" });
+        }
+
+        // Delete comment
+        await Comment.findByIdAndDelete(commentId);
+
+        // Remove reference from Post
+        await Post.findByIdAndUpdate(
+            id,
+            { $pull: { comments: commentId } },
+            { new: true }
+        );
+
+        res.json({ message: "Comment deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+// GET ALL COMMENTS
 exports.getAllComments = async (req, res) => {
     const { page = 1, limit = 5 } = req.query
     const skip = (parseInt(page) - 1) * parseInt(limit)
@@ -242,4 +314,3 @@ exports.getAllComments = async (req, res) => {
         allComments
     })
 }
-

@@ -5,3 +5,4 @@ node_modules
 personal.txt
 
 # later we will remove .env too
+.env.production

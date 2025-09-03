@@ -1,12 +1,27 @@
 const express = require('express')
 const router = express.Router()
 
-const { createPost, getPostById, updatePostById, deletePostById, toggleLike, createComments, getComments, getAllPosts, getAllComments, getPostByUsername } = require('../controllers/postController')
+const { 
+    createPost, 
+    getPostById, 
+    updatePostById, 
+    deletePostById, 
+    toggleLike, 
+    createComments, 
+    getComments, 
+    getAllPosts, 
+    getAllComments, 
+    getPostByUsername,
+    deleteCommentById,
+    updateCommentById
+} = require('../controllers/postController')
+
 const validate = require('../middlewares/validate')
 const { postValidator } = require('../validators/postValidator')
 const { auth } = require('../middlewares/authMiddleware')
 const upload = require('../middlewares/upload')
 
+// POST ROUTES
 router.post('/', auth, upload.single("image"), validate(postValidator), createPost)
 router.get('/', auth, getAllPosts)
 router.get('/comments', auth, getAllComments)
@@ -15,12 +30,13 @@ router.get('/:id', auth, getPostById)
 router.put('/:id', auth, updatePostById)
 router.delete('/:id', auth, deletePostById)
 
-// populate name of user in likes array remaining (DONE)
+// LIKE ROUTE
 router.post('/:id/like', auth, toggleLike)
 
-// pouplate authorName and text in comments remaining ( DONE )
+// COMMENTS ROUTES
 router.post('/:id/comments', auth, createComments)
 router.get('/:id/comments', auth, getComments)
-
+router.put('/:id/comments/:commentId', auth, updateCommentById)  
+router.delete('/:id/comments/:commentId', auth, deleteCommentById) 
 
 module.exports = router

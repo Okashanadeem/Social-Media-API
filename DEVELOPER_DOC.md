@@ -72,24 +72,25 @@ A secure, production-ready Node.js + Express REST API backend for a social media
      ```
    * Open Postman → *Import* → Select the file you want → Start testing APIs 🎉
 
-```
-
 ---
 
 ## API Documentation
 
 ### Base URLs
-```
 
+```
 Local Development: [http://localhost:5000/api](http://localhost:5000/api)
 Production (Render): [https://social-media-api-zruf.onrender.com/api](https://social-media-api-zruf.onrender.com/api)
 
-````
+```
 
 ### Response Format
+
 All API responses follow a consistent format:
 
+
 **Success Response:**
+
 ```json
 {
   "success": true,
@@ -97,7 +98,7 @@ All API responses follow a consistent format:
     // Response data here
   }
 }
-````
+```
 
 **Error Response:**
 
@@ -196,7 +197,6 @@ All API responses follow a consistent format:
 | Method | Endpoint             | Description                       |
 | ------ | -------------------- | --------------------------------- |
 | `GET`  | `/api/search?query=` | Full-text search in users & posts |
-| `GET`  | `/api/notifications` | Pull notifications for user       |
 
 ---
 
@@ -331,7 +331,6 @@ To ensure smooth progress, we divide the project into **independent modules**. E
 * Create, read, update, delete posts (`/posts`).
 * Image/file upload support (Multer).
 * Link posts with `userId`.
-* Basic feed of all posts.
 
 👉 Once auth is ready, users should be able to **post content**.
 
@@ -343,9 +342,6 @@ To ensure smooth progress, we divide the project into **independent modules**. E
 
 * Like/unlike posts (`/posts/:id/like`).
 * Comment CRUD (`/posts/:id/comments`).
-* Notification triggers for like/comment (optional for bonus).
-
-👉 Adds engagement — after content exists.
 
 ---
 
@@ -355,7 +351,6 @@ To ensure smooth progress, we divide the project into **independent modules**. E
 
 * Follow/unfollow users (`/users/:id/follow`).
 * Personalized feed (posts only from followed users).
-* Explore feed (random/public posts).
 
 👉 This turns the app from “just posting” → **social media experience**.
 
@@ -366,14 +361,12 @@ To ensure smooth progress, we divide the project into **independent modules**. E
 **Priority:** 🟢 Sixth
 
 * Search users by name/username.
-* Search posts by text/hashtags.
+* Search posts by text.
 * Analytics endpoints:
 
   * Most liked posts.
   * Most active users.
   * Daily/weekly post count.
-
-👉 Useful for insights + extra marks.
 
 ---
 
@@ -485,9 +478,7 @@ Below is a clear, final module division for the three team members. Branch names
 **Acceptance**
 
 * Register/login endpoints issue valid JWTs and protected routes validate tokens.
-* `npm run seed` creates sample users/posts (basic); `npm run reset-db` clears collections.
 * Validators reject invalid auth inputs with consistent error format.
-* README contains quick usage examples; smoke-test runs main flow.
 
 **Module link:**
 
