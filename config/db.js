@@ -1,11 +1,23 @@
+const mongoose = require('mongoose');
 
 module.exports = () => {
-    const mongoose = require('mongoose')
-    mongoose.connect(process.env.MONGO_URI)
-    .then(()=>{
-        console.log('MongoDB connected successfully')
+  const env = process.env.NODE_ENV || "development";
+
+  // Pick URI based on environment
+  const mongoURI =
+    env === "production"
+      ? process.env.MONGO_URI_CLOUD   // Cloud (Atlas)
+      : process.env.MONGO_URI_LOCAL;  // Local
+
+  mongoose
+    .connect(mongoURI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
     })
-    .catch((err)=>{
-        console.error(err.message)
+    .then(() => {
+      console.log(`MongoDB connected successfully to ${env} database`);
     })
-}
+    .catch((err) => {
+      console.error("MongoDB connection error:", err.message);
+    });
+};
