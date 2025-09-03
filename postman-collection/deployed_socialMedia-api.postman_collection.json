@@ -1,0 +1,346 @@
+{
+  "info": {
+    "_postman_id": "3ec942c1-9362-4b07-8278-9eab7c4796b8",
+    "name": "socialMedia-api-deployed",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "46823724"
+  },
+  "item": [
+    {
+      "name": "register",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"John Doe\",\r\n    \"username\": \"johndoe\",\r\n    \"email\": \"john@example.com\",\r\n    \"password\": \"password123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://social-media-api-zruf.onrender.com/api/auth/register",
+          "protocol": "https",
+          "host": ["social-media-api-zruf", "onrender", "com"],
+          "path": ["api", "auth", "register"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "login",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\": \"john@example.com\",\r\n    \"password\": \"password123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://social-media-api-zruf.onrender.com/api/auth/login",
+          "protocol": "https",
+          "host": ["social-media-api-zruf", "onrender", "com"],
+          "path": ["api", "auth", "login"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getCurrentUser",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+        ],
+        "url": { 
+          "raw": "https://social-media-api-zruf.onrender.com/api/auth/me",
+          "host": "https",
+          "port": ["social-media-api-zruf", "onrender", "com"],
+          "path": ["api", "auth", "me"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "logout",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "https://social-media-api-zruf.onrender.com/api/auth/logout",
+          "protocol": "https",
+          "host": ["social-media-api-zruf", "onrender", "com"],
+          "path": ["api", "auth", "logout"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "post",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"authorName\": \"{{userId}}\",\r\n    \"text\": \"Hello Everyone, Wassup?\"\r\n}"
+        },
+        "url": {
+          "raw": "https://social-media-api-zruf.onrender.com/api/post",
+          "protocol": "https",
+          "host": ["social-media-api-zruf", "onrender", "com"],
+          "path": ["api", "post"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getPosts",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+        ],
+        "url": {
+          "raw": "https://social-media-api-zruf.onrender.com/api/post",
+          "protocol": "https",
+          "host": ["social-media-api-zruf", "onrender", "com"],
+          "path": ["api", "post"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "updatePost",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"authorName\": \"{{userId}}\",\r\n    \"text\": \"Updated post text\"\r\n}"
+        },
+        "url": {
+          "raw": "https://social-media-api-zruf.onrender.com/api/post/{{postId}}",
+          "protocol": "https",
+          "host": ["social-media-api-zruf", "onrender", "com"],
+          "path": ["api", "post", "{{postId}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "deletePost",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+        ],
+        "url": {
+          "raw": "https://social-media-api-zruf.onrender.com/api/post/{{postId}}",
+          "protocol": "https",
+          "host": ["social-media-api-zruf", "onrender", "com"],
+          "path": ["api", "post", "{{postId}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "toggleLike",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+        ],
+        "url": {
+          "raw": "https://social-media-api-zruf.onrender.com/api/post/{{postId}}/like",
+          "protocol": "https",
+          "host": ["social-media-api-zruf", "onrender", "com"],
+          "path": ["api", "post", "{{postId}}", "like"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "addComment",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"text\": \"Good to see you back online!\"\r\n}"
+        },
+        "url": {
+          "raw": "https://social-media-api-zruf.onrender.com/api/post/{{postId}}/comments",
+          "protocol": "https",
+          "host": ["social-media-api-zruf", "onrender", "com"],
+          "path": ["api", "post", "{{postId}}", "comments"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getComments",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+        ],
+        "url": {
+          "raw": "https://social-media-api-zruf.onrender.com/api/post/{{postId}}/comments",
+          "protocol": "https",
+          "host": ["social-media-api-zruf", "onrender", "com"],
+          "path": ["api", "post", "{{postId}}", "comments"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "feed",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+        ],
+        "url": {
+          "raw": "https://social-media-api-zruf.onrender.com/api/feed",
+          "protocol": "https",
+          "host": ["social-media-api-zruf", "onrender", "com"],
+          "path": ["api", "feed"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "stats - topPosts",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{token}}", "type": "text" }
+        ],
+        "url": {
+          "raw": "https://social-media-api-zruf.onrender.com/api/stats/top-posts?days=7&limit=5",
+          "protocol": "https",
+          "host": ["social-media-api-zruf", "onrender", "com"],
+          "path": ["api", "stats", "top-posts"],
+          "query": [
+            { "key": "days", "value": "7" },
+            { "key": "limit", "value": "5" }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "admin - getAllUsers",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{adminToken}}", "type": "text" }
+        ],
+        "url": {
+          "raw": "https://social-media-api-zruf.onrender.com/api/admin/users",
+          "protocol": "https",
+          "host": ["social-media-api-zruf", "onrender", "com"],
+          "path": ["api", "admin", "users"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "admin - deleteUser",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{adminToken}}", "type": "text" }
+        ],
+        "url": {
+          "raw": "https://social-media-api-zruf.onrender.com/api/admin/users/{{userId}}",
+          "protocol": "https",
+          "host": ["social-media-api-zruf", "onrender", "com"],
+          "path": ["api", "admin", "users", "{{userId}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "admin - deletePost",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{adminToken}}", "type": "text" }
+        ],
+        "url": {
+          "raw": "https://social-media-api-zruf.onrender.com/api/admin/posts/{{postId}}",
+          "protocol": "https",
+          "host": ["social-media-api-zruf", "onrender", "com"],
+          "path": ["api", "admin", "posts", "{{postId}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "admin - getStats",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{adminToken}}", "type": "text" }
+        ],
+        "url": {
+          "raw": "https://social-media-api-zruf.onrender.com/api/admin/stats",
+          "protocol": "https",
+          "host": ["social-media-api-zruf", "onrender", "com"],
+          "path": ["api", "admin", "stats"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "admin - activeUsers",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{adminToken}}", "type": "text" }
+        ],
+        "url": {
+          "raw": "https://social-media-api-zruf.onrender.com/api/admin/stats/active-users?days=7&limit=5",
+          "protocol": "https",
+          "host": ["social-media-api-zruf", "onrender", "com"],
+          "path": ["api", "admin", "stats", "active-users"],
+          "query": [
+            { "key": "days", "value": "7" },
+            { "key": "limit", "value": "5" }
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    { "key": "token", "value": "" },
+    { "key": "adminToken", "value": "" },
+    { "key": "userId", "value": "" },
+    { "key": "postId", "value": "" }
+  ]
+}

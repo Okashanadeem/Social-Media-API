@@ -20,48 +20,71 @@ A secure, production-ready Node.js + Express REST API backend for a social media
 ## Table of Contents | Quick Access
 
 - [Installation](#installation)  
-- [API Documentation](#api-documentation)  
-- [Database Schema](#database-schema)  
+- [API Documentation](#api-documentation)
+- [Project Structure](#project-structure)  
 - [Modules & Development Order](#modules--development-order)  
 - [Team module assignments](#team-module-assignments)  
-- [Project Structure](#project-structure)  
 
+
+---
 
 ## Installation
 
 ### Prerequisites
 
-- Node.js (v16 or higher)
-- MongoDB (v4.4 or higher)
-- npm or yarn package manager
+- Node.js 
+- MongoDB 
+- npm (package manager)
+- Postman (for testing APIs)
 
 ### Quick Start
 
 1. **Clone the repository**
    ```bash
    git clone https://github.com/Okashanadeem/Social-Media-API.git
-   cd social-media-api
-   ```
+   cd Social-Media-API
+````
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Start the API server**
+
    ```bash
    # Development mode with auto-reload
    npm run dev
-
    ```
 
+4. **Import Postman Collection (Optional, for testing APIs)**
+
+   * For **local testing**, import:
+
+     ```
+     postman-collection/local_socialMedia-api.postman_collection.json
+     ```
+   * For **deployed (Render) testing**, import:
+
+     ```
+     postman-collection/deployed_socialMedia-api.postman_collection.json
+     ```
+   * Open Postman → *Import* → Select the file you want → Start testing APIs 🎉
+
+```
+
+---
 
 ## API Documentation
 
-### Base URL
+### Base URLs
 ```
-Local Development: http://localhost:3000/api
-```
+
+Local Development: [http://localhost:5000/api](http://localhost:5000/api)
+Production (Render): [https://social-media-api-zruf.onrender.com/api](https://social-media-api-zruf.onrender.com/api)
+
+````
 
 ### Response Format
 All API responses follow a consistent format:
@@ -74,18 +97,20 @@ All API responses follow a consistent format:
     // Response data here
   }
 }
-```
+````
 
 **Error Response:**
+
 ```json
 {
   "success": false,
   "error": {
     "code": "ERROR_CODE",
     "message": "Human readable error message",
-    "details": {} // Optional validation details
   }
 }
+```
+
 ```
 
 ## 1. **Auth APIs**
@@ -176,74 +201,6 @@ All API responses follow a consistent format:
 
 ---
 
-## Database Schema
-
-### User Model
-```javascript
-{
-  _id: ObjectId,
-  name: String,
-  username: { type: String, unique: true, index: true },
-  email: { type: String, unique: true, index: true },
-  passwordHash: String,
-  bio: String,
-  avatarUrl: String,
-  role: { type: String, enum: ['user', 'admin'], default: 'user' },
-  followersCount: { type: Number, default: 0 },
-  followingCount: { type: Number, default: 0 },
-  createdAt: Date,
-  updatedAt: Date
-}
-```
-
-### Post Model
-```javascript
-{
-  _id: ObjectId,
-  authorId: ObjectId,
-  text: String,
-  imageUrl: String,
-  likesCount: { type: Number, default: 0 },
-  commentsCount: { type: Number, default: 0 },
-  status: { type: String, enum: ['active', 'removed', 'flagged'], default: 'active' },
-  createdAt: Date,
-  updatedAt: Date
-}
-```
-
-### Follow Model
-```javascript
-{
-  _id: ObjectId,
-  followerId: ObjectId,
-  followeeId: ObjectId,
-  createdAt: Date
-}
-```
-
-### Like Model
-```javascript
-{
-  _id: ObjectId,
-  userId: ObjectId,
-  postId: ObjectId,
-  createdAt: Date
-}
-```
-
-### Comment Model
-```javascript
-{
-  _id: ObjectId,
-  postId: ObjectId,
-  authorId: ObjectId,
-  text: String,
-  isDeleted: { type: Boolean, default: false },
-  createdAt: Date,
-  updatedAt: Date
-}
-```
-
 ## Project Structure
 
 ```
@@ -315,10 +272,7 @@ npm run dev
 npm start
 
 # Seed database with sample data
-npm run seed
-
-# Reset database
-npm run reset-db
+node utils/seed.js
 ```
 
 
