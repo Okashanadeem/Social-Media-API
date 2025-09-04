@@ -165,38 +165,34 @@ All API responses follow a consistent format:
 
 ## 6. **Comment APIs**
 
-| Method | Endpoint                  | Description             | Request Body    | Response                             |
-| ------ | ------------------------- | ----------------------- | --------------- | ------------------------------------ |
-| `POST` | `/api/posts/:id/comments` | Add a comment           | `{ text }`      | `{ id, text, createdBy, createdAt }` |
-| `GET`  | `/api/posts/:id/comments` | Get comments for a post | `?page=&limit=` | `[ { comment1 }, { comment2 } ... ]` |
+| Method   | Endpoint                            | Description                   | Request Body    | Response                                           |
+| -------- | ----------------------------------- | ----------------------------- | --------------- | -------------------------------------------------- |
+| `POST`   | `/api/posts/:id/comments`           | Add a comment to a post       | `{ text }`      | `{ id, text, createdBy, createdAt }`               |
+| `GET`    | `/api/posts/:id/comments`           | Get comments for a post       | `?page=&limit=` | `{ page, pageSize, totalComments, comments[] }`    |
+| `PUT`    | `/api/posts/:id/comments/:commentId`| Update a comment (owner/admin)| `{ text }`      | `{ message: "Comment updated successfully", comment }` |
+| `DELETE` | `/api/posts/:id/comments/:commentId`| Delete a comment (owner/admin)| –               | `{ message: "Comment deleted successfully" }`      |
+| `GET`    | `/api/posts/comments`               | Get all comments by user      | `?page=&limit=` | `{ page, pageSize, totalComments, allComments[] }` |
 
 ---
 
 ## 7. **Admin APIs**
 
-| Method   | Endpoint               | Description   | Response                                |
-| -------- | ---------------------- | ------------- | --------------------------------------- |
-| `GET`    | `/api/admin/users`     | Get all users | `[ { user1 }, { user2 } ... ]`          |
-| `DELETE` | `/api/admin/users/:id` | Delete a user | `{ message }`                           |
-| `DELETE` | `/api/admin/posts/:id` | Delete a post | `{ message }`                           |
-| `GET`    | `/api/admin/stats`     | Get analytics | `{ totalUsers, activeUsers, topPosts }` |
+| Method   | Endpoint                      | Description                              | Query Params      | Response                                                             |
+| -------- | ----------------------------- | ---------------------------------------- | ----------------- | -------------------------------------------------------------------- |
+| `GET`    | `/api/admin/users`            | Get all users (paginated)                | `?page=&limit=`   | `{ success, totalUsers, page, pageSize, users[] }`                   |
+| `DELETE` | `/api/admin/users/:username`  | Delete a user (and their posts/comments) | –                 | `{ success, message: "User and related content deleted", name }`      |
+| `DELETE` | `/api/admin/posts/:id`        | Delete a post (and its comments)         | –                 | `{ success, message: "Post and comments deleted", id }`               |
+| `GET`    | `/api/admin/stats`            | Get total counts                         | –                 | `{ success, stats: { totalUsers, totalPosts, totalComments } }`       |
+| `GET`    | `/api/admin/stats/active-users` | Get most active users by post count     | `?days=7&limit=5` | `{ success, activeUsers: [ { userId, username, postCount } ] }`       |
+| `GET`    | `/api/admin/dashboard`        | Admin dashboard welcome message           | –                 | `{ success, message: "Welcome, adminUsername" }`                      |
 
 ---
 
-## 8. **Analytics APIs**
-
-| Method | Endpoint                  | Description                     | Query Params      | Response                                          |
-| ------ | ------------------------- | ------------------------------- | ----------------- | ------------------------------------------------- |
-| `GET`  | `/api/stats/top-posts`    | Get top posts by likes/comments | `?days=7&limit=5` | `[ { postId, text, likesCount, commentsCount } ]` |
-| `GET`  | `/api/stats/active-users` | Get active users by posts count | `?days=7&limit=5` | `[ { userId, username, postCount } ]`             |
-
----
-
-## 9. **Optional APIs (If Time Allows)**
+## 8. **Optional APIs (If Time Allows) DONE!!!!**
 
 | Method | Endpoint             | Description                       |
 | ------ | -------------------- | --------------------------------- |
-| `GET`  | `/api/search?query=` | Full-text search in users & posts |
+| `GET`  | `/api/search?query=` | Full-text search in users |
 
 ---
 
@@ -205,7 +201,7 @@ All API responses follow a consistent format:
 ```
 Social-Media-API/
 │
-├── controllers/                      # Handle business logic for each feature
+├── controllers/                       # Handle business logic for each feature
 │   ├── authController.js              # Signup, login, logout, token handling
 │   ├── userController.js              # Profile, update, delete, user details
 │   ├── postController.js              # CRUD operations for posts
