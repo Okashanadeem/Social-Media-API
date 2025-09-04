@@ -65,12 +65,6 @@ A secure, production-ready Node.js + Express REST API backend for a social media
      ```
      postman-collection/local_socialMedia-api.postman_collection.json
      ```
-   * For **deployed (Render) testing**, import:
-
-     ```
-     postman-collection/deployed_socialMedia-api.postman_collection.json
-     ```
-   * Open Postman → *Import* → Select the file you want → Start testing APIs 🎉
 
 ---
 
@@ -78,11 +72,11 @@ A secure, production-ready Node.js + Express REST API backend for a social media
 
 ### Base URLs
 
-```
+
 Local Development: [http://localhost:5000/api](http://localhost:5000/api)
 Production (Render): [https://social-media-api-zruf.onrender.com/api](https://social-media-api-zruf.onrender.com/api)
 
-```
+
 
 ### Response Format
 
