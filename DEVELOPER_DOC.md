@@ -43,7 +43,7 @@ A secure, production-ready Node.js + Express REST API backend for a social media
    ```bash
    git clone https://github.com/Okashanadeem/Social-Media-API.git
    cd Social-Media-API
-```
+  ```
 
 2. **Install dependencies**
 
